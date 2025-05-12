@@ -1,21 +1,16 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export default createTheme({
   palette: {
-    primary: {
-      main: '#1976d2', // синий
-    },
-    secondary: {
-      main: '#4caf50', // зеленый
-    },
-    error: {
-      main: '#f44336', // красный
-    },
-    background: {
-      default: '#f5f5f5', // серый
-      paper: '#ffffff',
-    },
+    primary: { main: '#1976d2' },    // Синий
+    secondary: { main: '#4caf50' },  // Зеленый
+    error: { main: '#f44336' },      // Красный
+    background: { 
+      default: '#f5f5f5',            // Серый фон
+      paper: '#ffffff'               // Белый для карточек
+    }
   },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+  }
 });
-
-export default theme;

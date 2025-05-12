@@ -1,28 +1,44 @@
-import { Card, CardMedia, CardContent, Chip, Button } from '@mui/material';
+import { Card, CardMedia, CardContent, Button, Typography } from '@mui/material';
+import { ShoppingCart, Compare } from '@mui/icons-material';
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onAddToCart, onAddToCompare }) {
   return (
-    <Card sx={{ maxWidth: 345, height: '100%' }}>
+    <Card sx={{ maxWidth: 345, m: 2 }}>
       <CardMedia
         component="img"
         height="200"
         image={`/images/${product.image}`}
+        alt={product.name}
       />
       <CardContent>
-        <Chip label="Топ продаж" color="primary" sx={{ mb: 1 }} />
-        <h3>{product.name}</h3>
-        <ul>
-          {product.specs.map((spec, i) => (
-            <li key={i}>{spec}</li>
+        <Typography gutterBottom variant="h5" component="div">
+          {product.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {Object.entries(product.specs).map(([key, value]) => (
+            <div key={key}>{`${key}: ${value}`}</div>
           ))}
-        </ul>
-        <div className="price-block">
-          <span className="price">{product.price} ₽</span>
-          <Button variant="contained" color="primary">
-            В корзину
-          </Button>
-        </div>
+        </Typography>
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          {product.price.toLocaleString()} ₽
+        </Typography>
       </CardContent>
+      <Button 
+        variant="contained" 
+        startIcon={<ShoppingCart />}
+        onClick={() => onAddToCart(product)}
+        sx={{ m: 1 }}
+      >
+        В корзину
+      </Button>
+      <Button 
+        variant="outlined" 
+        startIcon={<Compare />}
+        onClick={() => onAddToCompare(product)}
+        sx={{ m: 1 }}
+      >
+        Сравнить
+      </Button>
     </Card>
   );
 }
