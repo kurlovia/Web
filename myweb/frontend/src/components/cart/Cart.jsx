@@ -1,119 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  Button,
-  IconButton
+import { 
+  Container, Paper, Typography, Table, TableBody, 
+  TableCell, TableContainer, TableHead, TableRow, 
+  Button, IconButton, Box 
 } from '@mui/material';
-import { Box, Typography, etc } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
-export default function Cart() {
-  const [cartItems, setCartItems] = useState([]);
-  const [total, setTotal] = useState(0);
-
-  // Загрузка корзины при монтировании
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const fetchCart = async () => {
-    try {
-      // В реальном проекте здесь будет запрос к вашему API
-      const mockCart = [
-        { id: 1, name: 'Игровой компьютер', price: 89990, quantity: 1 },
-        { id: 2, name: 'Ноутбук ASUS', price: 65000, quantity: 2 }
-      ];
-      setCartItems(mockCart);
-      calculateTotal(mockCart);
-    } catch (error) {
-      console.error('Ошибка загрузки корзины:', error);
-    }
-  };
-
-  const calculateTotal = (items) => {
-    const sum = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    setTotal(sum);
-  };
-
-  const removeItem = (itemId) => {
-    const updatedItems = cartItems.filter(item => item.id !== itemId);
-    setCartItems(updatedItems);
-    calculateTotal(updatedItems);
-  };
-
-  const updateQuantity = (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
-    
-    const updatedItems = cartItems.map(item => 
-      item.id === itemId ? { ...item, quantity: newQuantity } : item
-    );
-    
-    setCartItems(updatedItems);
-    calculateTotal(updatedItems);
-  };
+export default function Cart({ cartItems, updateQuantity, removeItem }) {
+  const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
-    <Box sx={{ maxWidth: 800, margin: '0 auto', p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Ваша корзина
-      </Typography>
-      
-      {cartItems.length === 0 ? (
-        <Typography variant="body1">Корзина пуста</Typography>
-      ) : (
-        <>
-          <List>
-            {cartItems.map((item) => (
-              <React.Fragment key={item.id}>
-                <ListItem>
-                  <ListItemText
-                    primary={item.name}
-                    secondary={`${item.price} ₽ × ${item.quantity}`}
-                  />
-                  
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Button 
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    >-</Button>
-                    
-                    <Typography sx={{ mx: 2 }}>{item.quantity}</Typography>
-                    
-                    <Button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    >+</Button>
-                    
-                    <IconButton
-                      onClick={() => removeItem(item.id)}
-                      color="error"
-                      sx={{ ml: 2 }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Box>
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-          
-          <Box sx={{ mt: 3, textAlign: 'right' }}>
-            <Typography variant="h6">
-              Итого: {total} ₽
-            </Typography>
-            <Button 
-              variant="contained" 
-              size="large" 
-              sx={{ mt: 2 }}
-            >
-              Оформить заказ
-            </Button>
-          </Box>
-        </>
-      )}
-    </Box>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Paper elevation={3} sx={{ p: 3, bgcolor: 'background.paper' }}>
+        <Typography variant="h4" color="primary" gutterBottom>
+          Ваша корзина
+        </Typography>
+        
+        {cartItems.length > 0 ? (
+          <>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow sx={{ bgcolor: 'background.default' }}>
+                    <TableCell>Товар</TableCell>
+                    <TableCell align="center">Количество</TableCell>
+                    <TableCell align="right">Цена</TableCell>
+                    <TableCell align="right">Действия</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cartItems.map(item => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <Box display="flex" alignItems="center">
+                          <img 
+                            src={`/images/${item.image}`} 
+                            alt={item.name} 
+                            style={{ width: 60, marginRight: 16 }}
+                          />
+                          <div>
+                            <Typography>{item.name}</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {item.specs[0]}
+                            </Typography>
+                          </div>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Button 
+                          size="small" 
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          color="error"
+                        >
+                          -
+                        </Button>
+                        <span style={{ margin: '0 10px' }}>{item.quantity}</span>
+                        <Button 
+                          size="small" 
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          color="secondary"
+                        >
+                          +
+                        </Button>
+                      </TableCell>
+                      <TableCell align="right">
+                        {(item.price * item.quantity).toLocaleString()} ₽
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton 
+                          onClick={() => removeItem(item.id)}
+                          color="error"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            <Box sx={{ mt: 3, textAlign: 'right' }}>
+              <Typography variant="h5" color="primary">
+                Итого: {total.toLocaleString()} ₽
+              </Typography>
+              <Button 
+                variant="contained" 
+                size="large" 
+                sx={{ mt: 2, bgcolor: 'secondary.main' }}
+              >
+                Оформить заказ
+              </Button>
+            </Box>
+          </>
+        ) : (
+          <Typography variant="body1" color="text.secondary">
+            Корзина пуста
+          </Typography>
+        )}
+      </Paper>
+    </Container>
   );
 }

@@ -5,8 +5,11 @@ use App\Database\ProductDB;
 use App\Database\CartDB;
 use App\Database\UserDB;
 
-Route::get('/products', function() {
-    return response()->json(ProductDB::all());
+Route::get('/products', function(Request $request) {
+    $category = $request->input('category');
+    return $category 
+        ? response()->json(ProductDB::getByCategory($category))
+        : response()->json(ProductDB::all());
 });
 
 Route::get('/products/{id}', function($id) {

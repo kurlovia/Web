@@ -1,22 +1,51 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ProductList from './components/ProductList';
-import Cart from './components/cart/Cart';
-import RegisterForm from './components/auth/RegisterForm';
-import Header from './components/Header';
+import MainPage from './components/pages/MainPage';
+import CartPage from './components/cart/CartPage';
+import ComparePage from './components/compare/ComparePage';
+import Configurator from './components/configurator/Configurator';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme';
 
 function App() {
+  const [comparedItems, setComparedItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCompare = (product) => {
+    if (!comparedItems.some(item => item.id === product.id)) {
+      setComparedItems([...comparedItems, product]);
+    }
+  };
+
+  // ... другие функции для корзины
+
   return (
-    <BrowserRouter>
-      <Header />
-      <div style={{ padding: '20px' }}>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Header compareCount={comparedItems.length} cartCount={cartItems.length} />
         <Routes>
-          <Route path="/" element={<ProductList />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/" element={
+            <>
+              <ProductFilters  />
+              <ProductList 
+                onAddToCompare={addToCompare}
+                onAddToCart={addToCart}
+              />
+            </>
+          } />
+          <Route path="/compare" element={
+            <ComparePage 
+              comparedItems={comparedItems}
+              removeFromCompare={removeFromCompare}
+            />
+          } />
+          <Route path="/cart" element={
+            <CartPage 
+              cartItems={cartItems}
+              updateQuantity={updateQuantity}
+              removeItem={removeItem}
+            />
+          } />
         </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
-
-export default App;
