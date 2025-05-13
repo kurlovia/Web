@@ -1,27 +1,24 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
-import MainPage from './components/pages/MainPage';
-import CartPage from './components/cart/Cart';
-import ComparePage from './components/compare/ComparePage';
-import Configurator from './components/configurator/Configurator';
+import HomePage from './pages/Home/HomePage';
 import Header from './components/layout/Header';
+import './App.css';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/compare" element={<ComparePage />} />
-          <Route path="/configurator" element={<Configurator />} />
+          <Route path="/" element={<HomePage />} />
+          {/* Пока оставим остальные маршруты закомментированными */}
+          {/* <Route path="/cart" element={<Cart />} /> */}
+          {/* <Route path="/compare" element={<ComparePage />} /> */}
+          {/* <Route path="/configurator" element={<Configurator />} /> */}
         </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+      </div>
+    </BrowserRouter>
   );
 }
 
-export default App;  // Добавлен экспорт по умолчанию
+export default App;
