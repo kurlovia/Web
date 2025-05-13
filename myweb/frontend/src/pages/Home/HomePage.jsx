@@ -1,17 +1,17 @@
 import React from 'react';
-import HeroSection from './components/HeroSection';
-import FeaturedProducts from './components/FeaturedProducts';
-import CategoriesSection from './components/CategoriesSection';
-import ServicesSection from './components/ServicesSection';
+import Header from '../../components/layout/Header/Header';
+import HeroSection from './components/HeroSection/HeroSection';
+import PromoSlider from './components/PromoSlider/PromoSlider';
+import FeaturedProducts from './components/FeaturedProducts/FeaturedProducts';
 import './HomePage.css';
 
 const HomePage = () => {
   return (
     <div className="home-page">
+      <Header />
       <HeroSection />
+      <PromoSlider />
       <FeaturedProducts />
-      <CategoriesSection />
-      <ServicesSection />
     </div>
   );
 };
