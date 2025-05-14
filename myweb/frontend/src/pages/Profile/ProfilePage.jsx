@@ -38,21 +38,34 @@ const ProfilePage = () => {
     }
   };
 
-  const handleRegister = () => {
-    const newUser = {
-      id: Date.now(),
-      ...formData
-    };
-    
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
-    
-    setIsLogin(true); // Переключаем на форму входа
-    setFormData({ email: formData.email, password: '', name: '' }); // Очищаем только пароль
-    
-    alert('Регистрация успешна! Теперь войдите в аккаунт.');
+const handleRegister = async () => {
+  // Проверяем, есть ли уже такой email в локальном хранилище
+  const existingUser = users.find(user => user.email === formData.email);
+  if (existingUser) {
+    setErrors({ email: 'Этот email уже зарегистрирован!' });
+    return;
+  }
+
+  // Валидация email
+  if (!formData.email.includes('@')) {
+    setErrors({ email: 'Введите корректный email' });
+    return;
+  }
+
+  const newUser = {
+    id: Date.now(),
+    ...formData
   };
+  
+  const updatedUsers = [...users, newUser];
+  setUsers(updatedUsers);
+  localStorage.setItem('users', JSON.stringify(updatedUsers));
+  
+  setIsLogin(true); // Переключаем на форму входа
+  setFormData({ email: formData.email, password: '', name: '' }); // Очищаем только пароль
+  
+  alert('Регистрация успешна! Теперь войдите в аккаунт.');
+};
 
   const handleLogin = () => {
     const user = users.find(u => 
@@ -68,26 +81,14 @@ const ProfilePage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Валидация email
-    const newErrors = {};
-    if (!formData.email.includes('@')) {
-      newErrors.email = 'Введите корректный email';
-    }
-    
-    setErrors(newErrors);
-    
-    // Если ошибок нет, продолжаем
-    if (Object.keys(newErrors).length === 0) {
-      if (isLogin) {
-        handleLogin();
-      } else {
-        handleRegister();
-      }
-    }
-  };
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (isLogin) {
+    handleLogin();
+  } else {
+    handleRegister(); // Теперь вся валидация происходит внутри handleRegister
+  }
+};
 
   if (currentUser) {
     return (
