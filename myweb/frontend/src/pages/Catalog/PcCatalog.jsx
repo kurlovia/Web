@@ -10,35 +10,31 @@ const PcCatalog = () => {
   const products = [
     {
       id: 1,
-      name: "Игровой ПК StormForce",
+      name: "Игровой ПК",
       price: 89990,
-      shortSpecs: "RTX 4070, i7-13700KF, 32GB",
-      // image: "/gaming-pc.jpg",
-      description: "Мощный игровой компьютер для профессиональных геймеров и стримеров",
-      specifications: [
-        { name: "Процессор", value: "Intel Core i7-13700KF" },
-        { name: "Видеокарта", value: "NVIDIA GeForce RTX 4070 12GB" },
-        { name: "Оперативная память", value: "32GB DDR5 5600MHz" },
-        { name: "Накопитель", value: "1TB NVMe SSD + 2TB HDD" },
-        { name: "Охлаждение", value: "Liquid Cooler 240mm" }
+      // image: "/images/gaming-pc.jpg",
+      description: "Мощный игровой компьютер для профессиональных геймеров",
+      specs: [
+        "Процессор: Intel Core i7-13700KF",
+        "Видеокарта: NVIDIA RTX 4070 12GB",
+        "Оперативная память: 32GB DDR5",
+        "Накопитель: 1TB NVMe SSD",
+        "Охлаждение: Liquid Cooler 240mm"
       ]
     },
     {
       id: 2,
-      name: "Офисный ПК BusinessPro",
+      name: "Офисный ПК",
       price: 42990,
-      shortSpecs: "i5-13400, 16GB, 512GB SSD",
-      // image: "/office-pc.jpg",
-      description: "Надежный компьютер для офисной работы и повседневных задач",
-      specifications: [
-        { name: "Процессор", value: "Intel Core i5-13400" },
-        { name: "Видеокарта", value: "Intel UHD Graphics 730" },
-        { name: "Оперативная память", value: "16GB DDR4 3200MHz" },
-        { name: "Накопитель", value: "512GB NVMe SSD" },
-        { name: "Корпус", value: "Mini Tower, 15L" }
+      // image: "/images/office-pc.jpg",
+      description: "Надежный компьютер для офисной работы",
+      specs: [
+        "Процессор: Intel Core i5-13400",
+        "Оперативная память: 16GB DDR4",
+        "Накопитель: 512GB SSD",
+        "Видеокарта: Intel UHD Graphics 730"
       ]
-    },
-    // Добавьте еще 4-6 компьютеров
+    }
   ];
 
   const breadcrumbs = [

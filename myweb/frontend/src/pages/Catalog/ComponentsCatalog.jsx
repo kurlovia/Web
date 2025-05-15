@@ -12,33 +12,33 @@ const ComponentsCatalog = () => {
       id: 1,
       name: "Видеокарта NVIDIA RTX 4090",
       price: 189990,
-      shortSpecs: "24GB GDDR6X, DLSS 3",
-      // image: "/gpu.jpg",
-      description: "Флагманская видеокарта для 4K игр и профессиональных задач",
-      specifications: [
-        { name: "Чипсет", value: "NVIDIA GeForce RTX 4090" },
-        { name: "Память", value: "24GB GDDR6X" },
-        { name: "Тактовая частота", value: "2235-2520 MHz" },
-        { name: "Разъемы", value: "3x DisplayPort, 1x HDMI" },
-        { name: "Рекомендуемый БП", value: "850W" }
-      ]
+      image: "/images/rtx4090.jpg",
+      description: "Флагманская видеокарта для 4K игр",
+      specs: [
+        "Чипсет: NVIDIA GeForce RTX 4090",
+        "Видеопамять: 24GB GDDR6X",
+        "Тактовая частота: 2235-2520 MHz",
+        "Разъемы: 3x DisplayPort, 1x HDMI",
+        "Рекомендуемый БП: 850W"
+      ],
+      shortSpecs: "RTX 4090, 24GB GDDR6X"
     },
     {
       id: 2,
       name: "Процессор AMD Ryzen 9 7950X",
       price: 64990,
-      shortSpecs: "16 ядер, 4.5-5.7 GHz",
-      // image: "/cpu.jpg",
-      description: "Топовый процессор для профессиональных рабочих станций",
-      specifications: [
-        { name: "Ядра/потоки", value: "16/32" },
-        { name: "Тактовая частота", value: "4.5-5.7 GHz" },
-        { name: "Кэш L3", value: "64MB" },
-        { name: "TDP", value: "170W" },
-        { name: "Сокет", value: "AM5" }
-      ]
-    },
-    // Добавьте еще 4-6 комплектующих
+      image: "/images/ryzen9.jpg",
+      description: "16-ядерный процессор для профессиональных задач",
+      specs: [
+        "Ядра/потоки: 16/32",
+        "Тактовая частота: 4.5-5.7 GHz",
+        "Кэш L3: 64MB",
+        "TDP: 170W",
+        "Сокет: AM5"
+      ],
+      shortSpecs: "16 ядер, 4.5-5.7 GHz"
+    }
+    // Добавьте другие комплектующие по аналогии
   ];
 
   const breadcrumbs = [

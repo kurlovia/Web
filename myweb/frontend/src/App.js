@@ -10,6 +10,8 @@ import Profile from './pages/Profile/ProfilePage';
 import PcCatalog from './pages/Catalog/PcCatalog';
 import ComponentsCatalog from './pages/Catalog/ComponentsCatalog';
 import LaptopsCatalog from './pages/Catalog/LaptopsCatalog';
+import Checkout from './pages/Checkout/Checkout';
+import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
 import './styles/colors.css';
 import './App.css';
 
@@ -27,6 +29,8 @@ function App() {
             <Route path="/catalog/laptops" element={<LaptopsCatalog />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
           </Routes>
         </Router>
       </CartProvider>

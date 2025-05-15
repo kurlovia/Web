@@ -10,35 +10,37 @@ const LaptopsCatalog = () => {
   const products = [
     {
       id: 1,
-      name: "Игровой ноутбук ThunderX",
+      name: "Игровой ноутбук ThunderX Pro",
       price: 129990,
-      shortSpecs: "RTX 4080, i9-13900HX, 32GB",
-      // image: "/gaming-laptop.jpg",
-      description: "Экстремальная производительность для игр и творческих задач",
-      specifications: [
-        { name: "Процессор", value: "Intel Core i9-13900HX" },
-        { name: "Видеокарта", value: "NVIDIA GeForce RTX 4080 12GB" },
-        { name: "Экран", value: "17.3\" QHD 240Hz" },
-        { name: "Оперативная память", value: "32GB DDR5" },
-        { name: "Накопитель", value: "2TB NVMe SSD" }
-      ]
+      image: "/images/gaming-laptop.jpg",
+      description: "Мощный игровой ноутбук с топовой видеокартой",
+      specs: [
+        "Процессор: Intel Core i9-13900HX",
+        "Видеокарта: NVIDIA RTX 4080 12GB",
+        "Экран: 17.3\" QHD 240Hz",
+        "Оперативная память: 32GB DDR5",
+        "Накопитель: 2TB NVMe SSD",
+        "Вес: 2.9 кг"
+      ],
+      shortSpecs: "i9-13900HX, RTX 4080, 32GB RAM"
     },
     {
       id: 2,
       name: "Ультрабук SlimBook Air",
       price: 74990,
-      shortSpecs: "13.3\", M2, 16GB, 1TB",
-      // image: "/ultrabook.jpg",
-      description: "Стильный и легкий ультрабук для работы в движении",
-      specifications: [
-        { name: "Процессор", value: "Apple M2" },
-        { name: "Экран", value: "13.3\" Retina 2560x1600" },
-        { name: "Вес", value: "1.24 кг" },
-        { name: "Аккумулятор", value: "До 18 часов работы" },
-        { name: "Порты", value: "2x Thunderbolt 4" }
-      ]
-    },
-    // Добавьте еще 4-6 ноутбуков
+      image: "/images/ultrabook.jpg",
+      description: "Легкий и стильный ультрабук для работы",
+      specs: [
+        "Процессор: Apple M2",
+        "Экран: 13.3\" Retina 2560x1600",
+        "Оперативная память: 16GB",
+        "Накопитель: 1TB SSD",
+        "Вес: 1.24 кг",
+        "Аккумулятор: до 18 часов"
+      ],
+      shortSpecs: "Apple M2, 16GB, 1TB SSD"
+    }
+    // Добавьте другие ноутбуки по аналогии
   ];
 
   const breadcrumbs = [
