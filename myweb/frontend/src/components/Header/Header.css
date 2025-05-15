@@ -161,3 +161,30 @@
   justify-content: center;
   gap: 8px;
 }
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+
+.user-dropdown:hover .dropdown-content,
+.user-dropdown:focus-within .dropdown-content {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Для мобильных устройств можно добавить: */
+@media (max-width: 768px) {
+  .dropdown-content {
+    right: auto;
+    left: 0;
+  }
+}

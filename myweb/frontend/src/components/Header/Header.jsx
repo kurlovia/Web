@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   FaHome, 
@@ -17,9 +17,26 @@ const Header = () => {
   const { currentUser, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   // Не показывать шапку на главной странице
-  if (location.pathname === '/') return null;
+  // if (location.pathname === '/') return null;
+
+  // Добавьте в Header.jsx
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.user-dropdown')) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, []);
 
   return (
     <header className="main-header">
@@ -27,6 +44,10 @@ const Header = () => {
         <Link to="/" className="logo">TechZone</Link>
         
         <nav className="main-nav">
+           <Link to="/" className="nav-link">
+            <FaHome className="nav-icon" />
+            <span>Главная</span>
+          </Link>
           <Link to="/catalog" className={`nav-link ${location.pathname === '/catalog' ? 'active' : ''}`}>
             <FaLaptop className="nav-icon" />
             <span>Каталог</span>
@@ -46,25 +67,29 @@ const Header = () => {
           </Link>
         </nav>
 
+
+
         <div className="user-info">
           {currentUser ? (
             <div className="user-dropdown">
-              <button className="user-btn">
+              <button className="user-btn" onClick={toggleDropdown}>
                 <FaUser className="nav-icon" />
                 <span>{currentUser.name}</span>
               </button>
-              <div className="dropdown-content">
-                <p>{currentUser.email}</p>
-                <button 
-                  onClick={() => {
-                    logout();
-                    navigate('/');
-                  }} 
-                  className="logout-btn"
-                >
-                  <FaSignOutAlt /> Выйти
-                </button>
-              </div>
+              {isDropdownOpen && (
+                <div className="dropdown-content">
+                  <p>{currentUser.email}</p>
+                  <button 
+                    onClick={() => {
+                      logout();
+                      navigate('/');
+                    }} 
+                    className="logout-btn"
+                  >
+                    <FaSignOutAlt /> Выйти
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <Link to="/profile" className="login-link">
