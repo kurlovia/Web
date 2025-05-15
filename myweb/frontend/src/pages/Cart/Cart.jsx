@@ -4,8 +4,21 @@ import { useCart } from '../../context/CartContext';
 import './Cart.css';
 
 const Cart = () => {
-  const { cartItems, removeFromCart, clearCart } = useCart();
+  const { cartItems, removeFromCart, clearCart, updateQuantity } = useCart();
+  
+  // Полная стоимость корзины
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  // Обработчик изменения количества
+  const handleQuantityChange = (id, newQuantity) => {
+    if (newQuantity < 1) {
+      // Если количество стало 0, удаляем товар
+      removeFromCart(id);
+    } else {
+      // Иначе обновляем количество
+      updateQuantity(id, newQuantity);
+    }
+  };
 
   return (
     <div className="cart-page">
@@ -22,17 +35,34 @@ const Cart = () => {
         <>
           <div className="cart-items">
             {cartItems.map(item => (
-              <div key={`${item.id}-${item.quantity}`} className="cart-item">
+              <div key={`${item.id}-${item.size}`} className="cart-item">
                 <div className="item-info">
                   <h3>{item.name}</h3>
-                  <p>Цена: {item.price} руб. × {item.quantity}</p>
+                  <p>Цена: {item.price} руб. × {item.quantity} = {item.price * item.quantity} руб.</p>
+                  {item.size && <p>Размер: {item.size}</p>}
                 </div>
-                <button 
-                  onClick={() => removeFromCart(item.id)}
-                  className="remove-btn"
-                >
-                  Удалить
-                </button>
+                <div className="item-actions">
+                  <button 
+                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    className="quantity-btn"
+                    disabled={item.quantity <= 1} // Делаем кнопку неактивной при 1 товаре
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{item.quantity}</span>
+                  <button 
+                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    className="quantity-btn"
+                  >
+                    +
+                  </button>
+                  <button 
+                    onClick={() => removeFromCart(item.id)}
+                    className="remove-btn"
+                  >
+                    Удалить
+                  </button>
+                </div>
               </div>
             ))}
           </div>
