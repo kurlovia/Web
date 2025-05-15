@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -11,8 +12,8 @@ const ProfilePage = () => {
     name: ''
   });
   const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [errors, setErrors] = useState({}); // Добавлено состояние для ошибок
+  const [errors, setErrors] = useState({});
+  const { currentUser, login, logout } = useAuth();
   const navigate = useNavigate();
 
   // Загрузка пользователей из localStorage при монтировании
@@ -22,50 +23,47 @@ const ProfilePage = () => {
       setUsers(JSON.parse(savedUsers));
     }
     
-    const loggedInUser = localStorage.getItem('currentUser');
-    if (loggedInUser) {
-      setCurrentUser(JSON.parse(loggedInUser));
-      navigate('/'); // Перенаправляем на главную если уже авторизован
+    if (currentUser) {
+      navigate('/');
     }
-  }, [navigate]);
+  }, [currentUser, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Очищаем ошибку при изменении поля
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-const handleRegister = async () => {
-  // Проверяем, есть ли уже такой email в локальном хранилище
-  const existingUser = users.find(user => user.email === formData.email);
-  if (existingUser) {
-    setErrors({ email: 'Этот email уже зарегистрирован!' });
-    return;
-  }
+  const handleRegister = async () => {
+    const existingUser = users.find(user => user.email === formData.email);
+    if (existingUser) {
+      setErrors({ email: 'Этот email уже зарегистрирован!' });
+      return;
+    }
 
-  // Валидация email
-  if (!formData.email.includes('@')) {
-    setErrors({ email: 'Введите корректный email' });
-    return;
-  }
+    if (!formData.email.includes('@')) {
+      setErrors({ email: 'Введите корректный email' });
+      return;
+    }
 
-  const newUser = {
-    id: Date.now(),
-    ...formData
+    const newUser = {
+      id: Date.now(),
+      name: formData.name,
+      email: formData.email,
+      password: formData.password
+    };
+    
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    
+    // Автоматический вход после регистрации
+    login(newUser);
+    setFormData({ email: '', password: '', name: '' });
+    navigate('/');
   };
-  
-  const updatedUsers = [...users, newUser];
-  setUsers(updatedUsers);
-  localStorage.setItem('users', JSON.stringify(updatedUsers));
-  
-  setIsLogin(true); // Переключаем на форму входа
-  setFormData({ email: formData.email, password: '', name: '' }); // Очищаем только пароль
-  
-  alert('Регистрация успешна! Теперь войдите в аккаунт.');
-};
 
   const handleLogin = () => {
     const user = users.find(u => 
@@ -73,22 +71,21 @@ const handleRegister = async () => {
     );
     
     if (user) {
-      setCurrentUser(user);
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      navigate('/'); // Перенаправляем на главную
+      login(user);
+      navigate('/');
     } else {
       alert('Неверный email или пароль');
     }
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (isLogin) {
-    handleLogin();
-  } else {
-    handleRegister(); // Теперь вся валидация происходит внутри handleRegister
-  }
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      handleLogin();
+    } else {
+      handleRegister();
+    }
+  };
 
   if (currentUser) {
     return (
@@ -97,8 +94,8 @@ const handleSubmit = (e) => {
           <h2>Добро пожаловать, {currentUser.name}!</h2>
           <button 
             onClick={() => {
-              localStorage.removeItem('currentUser');
-              setCurrentUser(null);
+              logout();
+              navigate('/profile');
             }}
             className="logout-button"
           >
