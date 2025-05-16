@@ -12,6 +12,8 @@ import ComponentsCatalog from './pages/Catalog/ComponentsCatalog';
 import LaptopsCatalog from './pages/Catalog/LaptopsCatalog';
 import Checkout from './pages/Checkout/Checkout';
 import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
+import ServicesPage from './pages/Services/ServicesPage';
+import ServiceDetail from './pages/Services/ServiceDetail/ServiceDetail';
 import './styles/colors.css';
 import './App.css';
 
@@ -31,6 +33,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/:serviceId" component={ServiceDetail} />
           </Routes>
         </Router>
       </CartProvider>
