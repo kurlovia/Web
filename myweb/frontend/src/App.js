@@ -34,7 +34,7 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/:serviceId" component={ServiceDetail} />
+            <Route path="/services/:serviceId" element={<ServiceDetail />} />
           </Routes>
         </Router>
       </CartProvider>

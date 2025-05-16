@@ -1,51 +1,74 @@
-.services-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
+.catalog-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
-.services-header {
+.catalog-header {
   text-align: center;
   margin-bottom: 50px;
 }
 
-.services-header h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 15px;
-}
-
-.services-header p {
-  font-size: 1.1rem;
+.catalog-description {
   color: #666;
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: 20px auto 0;
+  line-height: 1.6;
 }
 
-.services-grid {
+.categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
 }
 
-@media (max-width: 768px) {
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.service-card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.category-card {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
-/* Задержка для каждой карточки */
-.service-card:nth-child(1) { animation-delay: 0.1s; }
-.service-card:nth-child(2) { animation-delay: 0.2s; }
-.service-card:nth-child(3) { animation-delay: 0.3s; }
-.service-card:nth-child(4) { animation-delay: 0.4s; }
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: 150px; /* Задайте высоту в зависимости от ваших требований */
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+}
+
+.card-content h3 {
+  margin: 0 0 15px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.card-content p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.category-link {
+  display: inline-flex;
+  align-items: center;
+  color: #4CAF50;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+

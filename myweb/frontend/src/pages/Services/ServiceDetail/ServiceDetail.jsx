@@ -1,6 +1,8 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import Breadcrumbs from '../../../components/Breadcrumbs/Breadcrumbs';
+import OrderServiceForm from '../../../components/OrderServiceForm/OrderServiceForm';
+import Notification from '../../../components/Notification/Notification';
 import './ServiceDetail.css';
 
 const servicesData = {
@@ -30,15 +32,46 @@ const servicesData = {
     price: "от 3 000 ₽",
     image: "/images/services/repair-detail.jpg"
   },
-  // Добавьте другие услуги по аналогии
+  diagnostic: {
+    title: "Диагностика",
+    description: "Комплексная проверка всех компонентов системы для выявления неисправностей.",
+    details: [
+      "Проверка аппаратных компонентов",
+      "Тестирование системы охлаждения",
+      "Диагностика операционной системы",
+      "Проверка на вирусы и вредоносное ПО",
+      "Составление отчета о состоянии системы"
+    ],
+    price: "от 1 500 ₽",
+    image: "/images/services/diagnostic-detail.jpg"
+  }
 };
 
 const ServiceDetail = () => {
   const { serviceId } = useParams();
+  const [showOrderForm, setShowOrderForm] = useState(false);
+  const [notification, setNotification] = useState(null);
   const service = servicesData[serviceId];
 
+  const handleOrderSubmit = (orderData) => {
+    console.log('Данные заказа:', orderData);
+    // Здесь можно добавить отправку данных на сервер
+    alert(`Спасибо, ${orderData.name}! Ваша заявка на "${orderData.service}" принята. Мы свяжемся с вами в ближайшее время.`);
+    setShowOrderForm(false);
+  };
+const closeNotification = () => {
+    setNotification(null);
+  };
   if (!service) {
-    return <div>Услуга не найдена</div>;
+    return (
+      <div className="service-detail-container">
+        <div className="service-not-found">
+          <h1>Услуга не найдена</h1>
+          <p>Извините, запрошенная услуга не существует.</p>
+          <Link to="/services" className="back-button">Вернуться к услугам</Link>
+        </div>
+      </div>
+    );
   }
 
   const breadcrumbs = [
@@ -74,9 +107,29 @@ const ServiceDetail = () => {
             </ul>
           </div>
           
-          <button className="order-button">Заказать услугу</button>
+          <button 
+            className="order-button" 
+            onClick={() => setShowOrderForm(true)}
+          >
+            Заказать услугу
+          </button>
         </div>
       </div>
+
+      {showOrderForm && (
+        <OrderServiceForm
+          serviceTitle={service.title}
+          onClose={() => setShowOrderForm(false)}
+          onSubmit={handleOrderSubmit}
+        />
+      )}
+
+      {notification && (
+        <Notification 
+          message={notification.message} 
+          onClose={closeNotification} 
+        />
+      )}
     </div>
   );
 };
