@@ -24,6 +24,7 @@ body {
 
 /* Стили для пустой корзины */
 .empty-cart {
+    max-width: auto;
     text-align: center;
     padding: 50px 0;
     background: #fff;

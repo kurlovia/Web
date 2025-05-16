@@ -1,22 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import Header from '../../components/Header/Header';
 import { 
-  FaArrowRight, 
   FaDesktop, 
   FaMicrochip, 
   FaLaptop,
-  FaHome,
-  FaTools,
-  FaShoppingCart,
-  FaUser,
-  FaFilter,
-  FaBreadSlice
+  FaArrowRight
 } from 'react-icons/fa';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import './Catalog.css';
 
-// Данные категорий
 const categories = [
   {
     id: 1,
@@ -49,8 +41,6 @@ const Catalog = () => {
 
   return (
     <div className="catalog-page">
-      {/* <Header /> */}
-      
       <div className="catalog-container">
         <Breadcrumbs items={breadcrumbs} />
         
@@ -63,18 +53,22 @@ const Catalog = () => {
 
         <div className="categories-grid">
           {categories.map(category => (
-            <div key={category.id} className="category-card">
+            <Link 
+              to={category.link} 
+              key={category.id} 
+              className="category-card"
+            >
               <div className="category-icon">
                 {category.icon}
               </div>
               <div className="category-info">
                 <h3>{category.name}</h3>
                 <p className="category-description">{category.description}</p>
-                <Link to={category.link} className="category-link">
+                <div className="category-link">
                   Подробнее <FaArrowRight />
-                </Link>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

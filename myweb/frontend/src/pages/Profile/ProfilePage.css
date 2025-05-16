@@ -1,10 +1,120 @@
 .profile-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 80vh;
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 40px 20px;
+}
+
+.profile-content {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  padding: 8px 16px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s;
+  color: #000000;
+}
+
+.action-button:hover {
+  background: #f5f5f5;
+  color: #000000;
+}
+
+.action-button.logout {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.action-button.logout:hover {
+  background: #ffebee;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-section:last-child {
+  border-bottom: none;
+}
+
+.profile-info {
+  margin-top: 15px;
+}
+
+.profile-info p {
+  margin: 10px 0;
+  color: #555;
+}
+
+.orders-list {
+  margin-top: 20px;
+}
+
+.order-item {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: all 0.3s;
+}
+
+.order-item:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.order-item p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.save-button {
+  padding: 12px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #3e8e41;
 }
 
 .auth-form {

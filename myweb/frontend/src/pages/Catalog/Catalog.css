@@ -27,7 +27,7 @@
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
 }
 
@@ -41,6 +41,9 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .category-card:hover {
@@ -76,13 +79,8 @@
   display: inline-flex;
   align-items: center;
   color: #4CAF50;
-  text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
-}
-
-.category-link:hover {
-  color: #3d8b40;
 }
 
 .category-link svg {
@@ -90,6 +88,6 @@
   transition: transform 0.3s;
 }
 
-.category-link:hover svg {
+.category-card:hover .category-link svg {
   transform: translateX(5px);
 }

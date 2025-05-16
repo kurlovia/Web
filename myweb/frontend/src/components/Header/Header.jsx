@@ -66,31 +66,12 @@ useEffect(() => {
             )}
           </Link>
         </nav>
-
-
-
-        <div className="user-info">
+<div className="user-info">
           {currentUser ? (
-            <div className="user-dropdown">
-              <button className="user-btn" onClick={toggleDropdown}>
-                <FaUser className="nav-icon" />
-                <span>{currentUser.name}</span>
-              </button>
-              {isDropdownOpen && (
-                <div className="dropdown-content">
-                  <p>{currentUser.email}</p>
-                  <button 
-                    onClick={() => {
-                      logout();
-                      navigate('/');
-                    }} 
-                    className="logout-btn"
-                  >
-                    <FaSignOutAlt /> Выйти
-                  </button>
-                </div>
-              )}
-            </div>
+            <Link to="/profile" className="user-btn">
+              <FaUser className="nav-icon" />
+              <span>{currentUser.name}</span>
+            </Link>
           ) : (
             <Link to="/profile" className="login-link">
               <FaUser /> Войти

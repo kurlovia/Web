@@ -223,3 +223,219 @@
 .card-button:hover {
   background: #45a049;
 }
+
+/* Добавьте в конец файла */
+/* Обновленные стили для фильтров */
+.filters-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.filters-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.filters-title {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.close-filters {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.2s;
+}
+
+.close-filters:hover {
+  color: #333;
+}
+
+.filter-section {
+  margin-bottom: 25px;
+}
+
+.filter-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
+}
+
+/* Стили для выпадающего списка сортировки */
+.sort-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+.sort-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Обновленные стили для ползунка цен */
+.price-range {
+  margin-top: 15px;
+}
+
+.slider {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 5px;
+  background: #ddd;
+  margin-top: 25px;
+  border-radius: 5px;
+  position: relative;
+}
+
+.range-input {
+  position: relative;
+  height: 5px;
+}
+
+/* Убрали .progress (зеленую полосу) и стилизовали сами ползунки */
+.range-input input {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  top: 0;
+  background: none;
+  pointer-events: auto;
+  appearance: none;
+  z-index: 2;
+}
+
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  background: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+/* Стили для полей ввода цен */
+.price-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.price-inputs > div {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-inputs input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.price-inputs input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.price-inputs span {
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+/* Стили для кнопок */
+.apply-filters {
+  width: 100%;
+  padding: 12px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.apply-filters:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+}
+
+.apply-filters:active {
+  transform: translateY(0);
+}
+
+.reset-filters {
+  width: 100%;
+  padding: 12px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.reset-filters:hover {
+  background: #e53935;
+  transform: translateY(-1px);
+}
+
+.reset-filters:active {
+  transform: translateY(0);
+}

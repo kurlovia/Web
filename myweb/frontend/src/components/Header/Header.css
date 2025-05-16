@@ -162,23 +162,21 @@
   gap: 8px;
 }
 
-.user-dropdown {
-  position: relative;
-  display: inline-block;
+.user-btn {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.dropdown-content {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.3s, transform 0.3s;
-  pointer-events: none;
-}
-
-.user-dropdown:hover .dropdown-content,
-.user-dropdown:focus-within .dropdown-content {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.user-btn:hover {
+  background: rgba(255,255,255,0.1);
 }
 
 /* Для мобильных устройств можно добавить: */
