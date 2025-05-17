@@ -17,7 +17,7 @@ const LaptopsCatalog = () => {
       id: 1,
       name: "Игровой ноутбук ThunderX Pro",
       price: 129990,
-      image: "/images/gaming-laptop.jpg",
+      image: "/assets/gaming-laptop.jpg",
       description: "Мощный игровой ноутбук с топовой видеокартой",
       specs: [
         "Процессор: Intel Core i9-13900HX",
@@ -33,7 +33,7 @@ const LaptopsCatalog = () => {
       id: 2,
       name: "Ультрабук SlimBook Air",
       price: 74990,
-      image: "/images/ultrabook.jpg",
+      image: "/assets/ultrabook.jpg",
       description: "Легкий и стильный ультрабук для работы",
       specs: [
         "Процессор: Apple M2",

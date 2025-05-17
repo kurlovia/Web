@@ -17,7 +17,7 @@ const servicesData = {
       "Оптимизация системы"
     ],
     price: "от 5 000 ₽",
-    image: "/images/services/upgrade-detail.jpg"
+    image: "/assets/upgrade.jpg"
   },
   repair: {
     title: "Ремонт ПК",
@@ -30,7 +30,7 @@ const servicesData = {
       "Восстановление данных"
     ],
     price: "от 3 000 ₽",
-    image: "/images/services/repair-detail.jpg"
+    image: "/assets/repair.jpg"
   },
   diagnostic: {
     title: "Диагностика",
@@ -43,7 +43,7 @@ const servicesData = {
       "Составление отчета о состоянии системы"
     ],
     price: "от 1 500 ₽",
-    image: "/images/services/diagnostic-detail.jpg"
+    image: "/assets/diagnostic.jpg"
   }
 };
 

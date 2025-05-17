@@ -17,7 +17,7 @@ const PcCatalog = () => {
       id: 1,
       name: "Игровой ПК",
       price: 89990,
-      // image: "/images/gaming-pc.jpg",
+      image: "/assets/gpc.jpg",
       description: "Мощный игровой компьютер для профессиональных геймеров",
       specs: [
         "Процессор: Intel Core i7-13700KF",
@@ -31,7 +31,7 @@ const PcCatalog = () => {
       id: 2,
       name: "Офисный ПК",
       price: 42990,
-      // image: "/images/office-pc.jpg",
+      image: "/assets/ofpc.jpg",
       description: "Надежный компьютер для офисной работы",
       specs: [
         "Процессор: Intel Core i5-13400",

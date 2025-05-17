@@ -8,19 +8,19 @@ const services = [
     id: 'upgrade',
     title: "Апгрейд ПК",
     description: "Модернизация компонентов для повышения производительности",
-    image: "/images/services/upgrade.jpg"
+    image: "/assets/upgrade.jpg"
   },
   {
     id: 'repair',
     title: "Ремонт ПК",
     description: "Диагностика и ремонт компьютерной техники",
-    image: "/images/services/repair.jpg"
+    image: "/assets/repair.jpg"
   },
   {
     id: 'diagnostic',
     title: "Диагностика",
     description: "Полная проверка всех компонентов системы",
-    image: "/images/services/diagnostic.jpg"
+    image: "/assets/diagnostic.jpg"
   }
 ];
 

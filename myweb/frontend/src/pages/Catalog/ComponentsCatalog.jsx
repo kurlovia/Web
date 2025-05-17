@@ -17,7 +17,7 @@ const ComponentsCatalog = () => {
       id: 1,
       name: "Видеокарта NVIDIA RTX 4090",
       price: 189990,
-      image: "/images/rtx4090.jpg",
+      image: "/assets/rtx4090.jpg",
       description: "Флагманская видеокарта для 4K игр",
       specs: [
         "Чипсет: NVIDIA GeForce RTX 4090",
@@ -32,7 +32,7 @@ const ComponentsCatalog = () => {
       id: 2,
       name: "Процессор AMD Ryzen 9 7950X",
       price: 64990,
-      image: "/images/ryzen9.jpg",
+      image: "/assets/ryzen9.jpg",
       description: "16-ядерный процессор для профессиональных задач",
       specs: [
         "Ядра/потоки: 16/32",
@@ -47,7 +47,7 @@ const ComponentsCatalog = () => {
       id: 3,
       name: "Оперативная память 32GB DDR5",
       price: 12990,
-      image: "/images/ram.jpg",
+      image: "/assets/ram.jpg",
       description: "Высокоскоростная память для игровых ПК",
       specs: [
         "Объем: 32GB (2x16GB)",
