@@ -1,11 +1,12 @@
 .order-success-container {
-  max-width: 1200px;
+  max-width: auto;
   margin: 0 auto;
   padding: 50px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 70vh;
+  background: white;
 }
 
 .order-success-card {

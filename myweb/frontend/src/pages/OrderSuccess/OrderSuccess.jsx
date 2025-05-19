@@ -15,7 +15,7 @@ const OrderSuccess = () => {
           <Link to="/catalog" className="continue-shopping">
             Продолжить покупки
           </Link>
-          <Link to="/profile/orders" className="view-orders">
+          <Link to="/profile" className="view-orders">
             Мои заказы
           </Link>
         </div>
