@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import './Cart.css';
+import 'C:/git/Web/myweb/frontend/src/styles/responsive.css';
 
 const Cart = () => {
   const { cartItems, removeFromCart, clearCart, updateQuantity } = useCart();

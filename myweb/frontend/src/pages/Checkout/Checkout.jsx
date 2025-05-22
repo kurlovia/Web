@@ -12,19 +12,34 @@ const Checkout = () => {
     address: '',
     payment: 'card',
     delivery: 'courier',
-    comments: ''
+    comments: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvc: '',
+    cardName: ''
   });
   const [errors, setErrors] = useState({});
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
-  // Валидация email
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
 
-  // Валидация телефона (минимальная проверка)
   const validatePhone = (phone) => {
     return phone.replace(/\D/g, '').length >= 10;
+  };
+
+  const validateCardNumber = (number) => {
+    return number.replace(/\D/g, '').length === 16;
+  };
+
+  const validateCardExpiry = (expiry) => {
+    return /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(expiry);
+  };
+
+  const validateCardCvc = (cvc) => {
+    return cvc.length === 3;
   };
 
   const validateStep = () => {
@@ -48,6 +63,29 @@ const Checkout = () => {
       newErrors.address = 'Введите адрес доставки';
     }
 
+    if (step === 3) {
+      if (formData.delivery === 'courier' || formData.payment === 'card') {
+        if (!formData.cardNumber) {
+          newErrors.cardNumber = 'Введите номер карты';
+        } else if (!validateCardNumber(formData.cardNumber)) {
+          newErrors.cardNumber = 'Некорректный номер карты';
+        }
+        if (!formData.cardExpiry) {
+          newErrors.cardExpiry = 'Введите срок действия';
+        } else if (!validateCardExpiry(formData.cardExpiry)) {
+          newErrors.cardExpiry = 'Некорректный срок';
+        }
+        if (!formData.cardCvc) {
+          newErrors.cardCvc = 'Введите CVC';
+        } else if (!validateCardCvc(formData.cardCvc)) {
+          newErrors.cardCvc = 'Некорректный CVC';
+        }
+        if (!formData.cardName.trim()) {
+          newErrors.cardName = 'Введите имя на карте';
+        }
+      }
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -55,7 +93,7 @@ const Checkout = () => {
   const nextStep = () => {
     if (!validateStep()) return;
     setStep(step + 1);
-    window.scrollTo(0, 0); // Прокрутка вверх при переходе
+    window.scrollTo(0, 0);
   };
 
   const prevStep = () => {
@@ -67,7 +105,6 @@ const Checkout = () => {
     e.preventDefault();
     if (!validateStep()) return;
 
-    // Здесь можно добавить отправку данных на сервер
     console.log('Order submitted:', { 
       ...formData, 
       items: cartItems, 
@@ -76,20 +113,17 @@ const Checkout = () => {
     });
     
     clearCart();
-    // Перенаправление на страницу успешного оформления
-    window.location.href = '/order-success';
+    setOrderSuccess(true);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Очищаем ошибку при изменении поля
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-  // Форматирование телефона
   const handlePhoneChange = (e) => {
     const value = e.target.value.replace(/\D/g, '');
     let formattedValue = '';
@@ -104,12 +138,42 @@ const Checkout = () => {
     }
   };
 
-  if (cartItems.length === 0) {
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    if (formattedValue.length > 19) formattedValue = formattedValue.substring(0, 19);
+    setFormData(prev => ({ ...prev, cardNumber: formattedValue }));
+  };
+
+  const handleCardExpiryChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    let formattedValue = value;
+    if (value.length > 2) {
+      formattedValue = `${value.substring(0, 2)}/${value.substring(2, 4)}`;
+    }
+    if (formattedValue.length > 5) formattedValue = formattedValue.substring(0, 5);
+    setFormData(prev => ({ ...prev, cardExpiry: formattedValue }));
+  };
+
+  if (cartItems.length === 0 && !orderSuccess) {
     return (
       <div className="empty-cart-message">
         <h2>Ваша корзина пуста</h2>
         <p>Прежде чем оформить заказ, добавьте товары в корзину</p>
         <a href="/catalog" className="back-to-catalog">Вернуться в каталог</a>
+      </div>
+    );
+  }
+
+  if (orderSuccess) {
+    return (
+      <div className="order-success-container">
+        <div className="order-success-message">
+          <h2>Заказ успешно оформлен!</h2>
+          <p>Номер вашего заказа: #{Math.floor(Math.random() * 1000000)}</p>
+          <p>Мы отправили детали заказа на {formData.email}</p>
+          <a href="/" className="back-to-home">Вернуться на главную</a>
+        </div>
       </div>
     );
   }
@@ -272,25 +336,88 @@ const Checkout = () => {
                     onChange={handleChange}
                   />
                   <div className="radio-content">
-                    <span className="radio-title">Банковской картой</span>
-                    <span className="radio-description">Оплата онлайн</span>
+                    <span className="radio-title">
+                      {formData.delivery === 'courier' ? 'Онлайн оплата картой' : 'Картой при получении'}
+                    </span>
                   </div>
                 </label>
                 
-                <label className="radio-option">
-                  <input
-                    type="radio"
-                    name="payment"
-                    value="cash"
-                    checked={formData.payment === 'cash'}
-                    onChange={handleChange}
-                  />
-                  <div className="radio-content">
-                    <span className="radio-title">Наличными при получении</span>
-                    <span className="radio-description">Только для самовывоза</span>
-                  </div>
-                </label>
+                {formData.delivery === 'pickup' && (
+                  <label className="radio-option">
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="cash"
+                      checked={formData.payment === 'cash'}
+                      onChange={handleChange}
+                    />
+                    <div className="radio-content">
+                      <span className="radio-title">Наличными при получении</span>
+                    </div>
+                  </label>
+                )}
               </div>
+
+              {(formData.delivery === 'courier' || formData.payment === 'card') && (
+                <div className="card-details">
+                  <div className={`form-group ${errors.cardNumber ? 'error' : ''}`}>
+                    <label htmlFor="cardNumber">Номер карты*</label>
+                    <input
+                      type="text"
+                      id="cardNumber"
+                      name="cardNumber"
+                      value={formData.cardNumber}
+                      onChange={handleCardNumberChange}
+                      placeholder="1234 5678 9012 3456"
+                      maxLength="19"
+                    />
+                    {errors.cardNumber && <span className="error-message">{errors.cardNumber}</span>}
+                  </div>
+
+                  <div className="card-row">
+                    <div className={`form-group ${errors.cardExpiry ? 'error' : ''}`}>
+                      <label htmlFor="cardExpiry">Срок действия*</label>
+                      <input
+                        type="text"
+                        id="cardExpiry"
+                        name="cardExpiry"
+                        value={formData.cardExpiry}
+                        onChange={handleCardExpiryChange}
+                        placeholder="MM/YY"
+                        maxLength="5"
+                      />
+                      {errors.cardExpiry && <span className="error-message">{errors.cardExpiry}</span>}
+                    </div>
+
+                    <div className={`form-group ${errors.cardCvc ? 'error' : ''}`}>
+                      <label htmlFor="cardCvc">CVC*</label>
+                      <input
+                        type="text"
+                        id="cardCvc"
+                        name="cardCvc"
+                        value={formData.cardCvc}
+                        onChange={handleChange}
+                        placeholder="123"
+                        maxLength="3"
+                      />
+                      {errors.cardCvc && <span className="error-message">{errors.cardCvc}</span>}
+                    </div>
+                  </div>
+
+                  <div className={`form-group ${errors.cardName ? 'error' : ''}`}>
+                    <label htmlFor="cardName">Имя на карте*</label>
+                    <input
+                      type="text"
+                      id="cardName"
+                      name="cardName"
+                      value={formData.cardName}
+                      onChange={handleChange}
+                      placeholder="IVAN IVANOV"
+                    />
+                    {errors.cardName && <span className="error-message">{errors.cardName}</span>}
+                  </div>
+                </div>
+              )}
 
               <div className="order-summary">
                 <h3>Ваш заказ</h3>
@@ -340,7 +467,6 @@ const Checkout = () => {
               <button 
                 type="submit" 
                 className="submit-btn"
-                disabled={Object.keys(errors).length > 0}
               >
                 Подтвердить заказ
               </button>

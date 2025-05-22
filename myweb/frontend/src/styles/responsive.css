@@ -1,0 +1,121 @@
+/* Базовые настройки для предотвращения горизонтального скролла */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Базовые адаптивные настройки */
+:root {
+  --mobile-breakpoint: 576px;
+  --tablet-breakpoint: 768px;
+  --desktop-breakpoint: 992px;
+}
+
+/* Основной контейнер с защитой от выхода за границы */
+.responsive-container {
+  width: 100%;
+  max-width: 100vw; /* Важное изменение */
+  padding: 0 clamp(16px, 4vw, 24px); /* Плавное изменение отступов */
+  margin: 0 auto;
+  box-sizing: border-box; /* Учитываем padding в ширине */
+  position: relative;
+}
+
+/* Медиа-запросы для разных устройств */
+@media (min-width: 576px) {
+  .responsive-container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .responsive-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .responsive-container {
+    max-width: 1140px;
+  }
+}
+
+/* Адаптивные утилитные классы с защитой от "улетания" */
+.mobile-only {
+  display: block;
+  position: relative; /* Фиксируем позицию */
+  left: auto;
+  right: auto;
+}
+
+.desktop-only {
+  display: none;
+  position: relative; /* Фиксируем позицию */
+  left: auto;
+  right: auto;
+}
+
+/* Стили для кнопок с защитой от смещения */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center; /* Центрируем на маленьких экранах */
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.button {
+  min-width: 120px;
+  flex: 1 0 auto; /* Гибкость без потери контроля */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .desktop-only {
+    display: block;
+  }
+  
+  .button-container {
+    justify-content: flex-start; /* Обычное выравнивание на десктопе */
+    flex-wrap: nowrap;
+  }
+}
+
+/* Дополнительная защита для навигации */
+nav {
+  width: 100%;
+  overflow-x: auto; /* Горизонтальный скролл только при необходимости */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px; /* Для индикатора скролла */
+}
+
+nav::-webkit-scrollbar {
+  display: none; /* Скрываем скроллбар */
+}
+
+/* Фикс для абсолютно позиционированных элементов */
+.fixed-element {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right)); /* Учет безопасных зон */
+  left: auto;
+}

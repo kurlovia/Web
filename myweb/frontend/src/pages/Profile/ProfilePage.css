@@ -265,3 +265,23 @@
   margin-bottom: 30px;
   font-size: 1.2rem;
 }
+
+.auth-method-switch {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.auth-method-switch.active {
+  background: #1E90FF;
+  color: white;
+  border-color: #1E90FF;
+}
+
+.auth-method-switch:not(.active):hover {
+  background: #eee;
+}

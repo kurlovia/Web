@@ -1,82 +1,90 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+// Header.jsx
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   FaHome, 
   FaLaptop, 
   FaTools, 
   FaShoppingCart, 
   FaUser,
-  FaSignOutAlt 
+  FaBars,
+  FaTimes
 } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
-import { useCart } from '../../context/CartContext'; // Добавляем импорт useCart
+import { useCart } from '../../context/CartContext';
 import './Header.css';
 
 const Header = () => {
-  const { cartItems } = useCart(); // Теперь useCart определен
-  const { currentUser, logout } = useAuth();
+  const { cartItems } = useCart();
+  const { currentUser } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  // Не показывать шапку на главной странице
-  // if (location.pathname === '/') return null;
-
-  // Добавьте в Header.jsx
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    if (!event.target.closest('.user-dropdown')) {
-      setIsDropdownOpen(false);
-    }
-  };
-
-  document.addEventListener('mousedown', handleClickOutside);
-  return () => document.removeEventListener('mousedown', handleClickOutside);
-}, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="main-header">
       <div className="header-container">
+        <button 
+          className="mobile-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Меню"
+        >
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
+
         <Link to="/" className="logo">TechZone</Link>
-        
-        <nav className="main-nav">
-           <Link to="/" className="nav-link">
+
+        <div className={`nav-content ${menuOpen ? 'active' : ''}`}>
+          <Link 
+            to="/" 
+            className={`nav-button ${location.pathname === '/' ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
+          >
             <FaHome className="nav-icon" />
             <span>Главная</span>
           </Link>
-          <Link to="/catalog" className={`nav-link ${location.pathname === '/catalog' ? 'active' : ''}`}>
+          
+          <Link 
+            to="/catalog" 
+            className={`nav-button ${location.pathname === '/catalog' ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
+          >
             <FaLaptop className="nav-icon" />
             <span>Каталог</span>
           </Link>
-          <Link to="/services" className={`nav-link ${location.pathname === '/services' ? 'active' : ''}`}>
+          
+          <Link 
+            to="/services" 
+            className={`nav-button ${location.pathname === '/services' ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
+          >
             <FaTools className="nav-icon" />
             <span>Услуги</span>
           </Link>
-          <Link to="/cart" className={`nav-link cart-link ${location.pathname === '/cart' ? 'active' : ''}`}>
-            <FaShoppingCart className="nav-icon" />
-            <span>Корзина</span>
-            {cartItems.length > 0 && (
-              <span className="cart-counter">
-                {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-              </span>
-            )}
+          
+          <div className="cart-button-container">
+            <Link 
+              to="/cart" 
+              className={`nav-button ${location.pathname === '/cart' ? 'active' : ''}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              <FaShoppingCart className="nav-icon" />
+              <span>Корзина</span>
+              {cartItems.length > 0 && (
+                <span className="cart-badge">
+                  {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              )}
+            </Link>
+          </div>
+          
+          <Link 
+            to={currentUser ? "/profile" : "/profile"}
+            className={`nav-button ${location.pathname === '/profile' ? 'active' : ''}`}
+            onClick={() => setMenuOpen(false)}
+          >
+            <FaUser className="nav-icon" />
+            <span>{currentUser ? currentUser.name : 'Войти'}</span>
           </Link>
-        </nav>
-<div className="user-info">
-          {currentUser ? (
-            <Link to="/profile" className="user-btn">
-              <FaUser className="nav-icon" />
-              <span>{currentUser.name}</span>
-            </Link>
-          ) : (
-            <Link to="/profile" className="login-link">
-              <FaUser /> Войти
-            </Link>
-          )}
         </div>
       </div>
     </header>

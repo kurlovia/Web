@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaGoogle, FaFacebook, FaUserEdit, FaSave } from 'react-icons/fa';
+import { FaGoogle, FaFacebook, FaUserEdit, FaSave, FaPhone } from 'react-icons/fa';
 import { useAuth } from '../../context/AuthContext';
+import axios from 'axios';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [authMethod, setAuthMethod] = useState('email'); // 'email' или 'sms'
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    name: ''
+    name: '',
+    phone: ''
   });
   const [editMode, setEditMode] = useState(false);
   const [users, setUsers] = useState([]);
   const [errors, setErrors] = useState({});
-  const [orders, setOrders] = useState([]); // Для хранения истории заказов
+  const [orders, setOrders] = useState([]);
   const { currentUser, login, logout, updateUser } = useAuth();
   const navigate = useNavigate();
 
@@ -24,13 +27,13 @@ const ProfilePage = () => {
       setUsers(JSON.parse(savedUsers));
     }
     
-if (currentUser) {
+    if (currentUser) {
       const userOrders = JSON.parse(localStorage.getItem('orders')) || [];
       setOrders(userOrders.filter(order => order.userId === currentUser.id));
     }
   }, [currentUser]);
 
-const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
@@ -39,9 +42,14 @@ const handleChange = (e) => {
   };
 
   const handleUpdateProfile = () => {
-    const updatedUser = { ...currentUser, name: formData.name, email: formData.email };
+    const updatedUser = { 
+      ...currentUser, 
+      name: formData.name || currentUser.name,
+      email: formData.email || currentUser.email,
+      phone: formData.phone || currentUser.phone
+    };
 
-  const updatedUsers = users.map(user => 
+    const updatedUsers = users.map(user => 
       user.id === currentUser.id ? updatedUser : user
     );
 
@@ -49,6 +57,30 @@ const handleChange = (e) => {
     localStorage.setItem('users', JSON.stringify(updatedUsers));
     updateUser(updatedUser);
     setEditMode(false);
+  };
+
+  // SMS-аутентификация
+  const sendSMSCode = async () => {
+    try {
+      await axios.post('/api/auth/sms/send-code', { phone: formData.phone });
+      alert('Код отправлен на ваш номер!');
+    } catch (error) {
+      alert('Ошибка при отправке кода');
+    }
+  };
+
+  const verifySMSCode = async () => {
+    try {
+      const { data } = await axios.post('/api/auth/sms/verify', { 
+        phone: formData.phone, 
+        code: formData.password 
+      });
+      localStorage.setItem('token', data.token);
+      login(data.user);
+      navigate('/');
+    } catch (error) {
+      alert('Неверный код подтверждения');
+    }
   };
 
   const handleRegister = async () => {
@@ -67,47 +99,47 @@ const handleChange = (e) => {
       id: Date.now(),
       name: formData.name,
       email: formData.email,
-      password: formData.password
+      password: formData.password,
+      phone: formData.phone || null
     };
     
     const updatedUsers = [...users, newUser];
     setUsers(updatedUsers);
     localStorage.setItem('users', JSON.stringify(updatedUsers));
-    
-    // Автоматический вход после регистрации
     login(newUser);
-    setFormData({ email: '', password: '', name: '' });
     navigate('/');
   };
 
-const handleLogin = () => {
-  try {
-    const user = users.find(u => 
-      u.email === formData.email && u.password === formData.password
-    );
-    
-    if (user) {
-      login(user);
-      navigate('/');
-    } else {
-      setErrors({ password: 'Неверный email или пароль' });
+  const handleLogin = () => {
+    try {
+      const user = users.find(u => 
+        u.email === formData.email && u.password === formData.password
+      );
+      
+      if (user) {
+        login(user);
+        navigate('/');
+      } else {
+        setErrors({ password: 'Неверный email или пароль' });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ general: 'Произошла ошибка при входе' });
     }
-  } catch (error) {
-    console.error('Login error:', error);
-    setErrors({ general: 'Произошла ошибка при входе' });
-  }
-};
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isLogin) {
+    if (authMethod === 'sms') {
+      verifySMSCode();
+    } else if (isLogin) {
       handleLogin();
     } else {
       handleRegister();
     }
   };
 
-    if (currentUser) {
+  if (currentUser) {
     return (
       <div className="profile-container">
         <div className="profile-content">
@@ -140,7 +172,7 @@ const handleLogin = () => {
                 <input
                   type="text"
                   name="name"
-                  value={formData.name || currentUser.name}
+                  value={formData.name || currentUser.name || ''}
                   onChange={handleChange}
                   required
                 />
@@ -150,9 +182,19 @@ const handleLogin = () => {
                 <input
                   type="email"
                   name="email"
-                  value={formData.email || currentUser.email}
+                  value={formData.email || currentUser.email || ''}
                   onChange={handleChange}
                   required
+                />
+              </div>
+              <div className="form-group">
+                <label>Телефон</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone || currentUser.phone || ''}
+                  onChange={handleChange}
+                  placeholder="+7 (XXX) XXX-XX-XX"
                 />
               </div>
               <button 
@@ -168,6 +210,7 @@ const handleLogin = () => {
               <div className="profile-info">
                 <p><strong>Имя:</strong> {currentUser.name}</p>
                 <p><strong>Email:</strong> {currentUser.email}</p>
+                {currentUser.phone && <p><strong>Телефон:</strong> {currentUser.phone}</p>}
               </div>
             </div>
           )}
@@ -198,50 +241,113 @@ const handleLogin = () => {
     <div className="profile-container">
       <div className="auth-form">
         <h2>{isLogin ? 'Вход в аккаунт' : 'Регистрация'}</h2>
-        
+
+        <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={() => setAuthMethod('email')}
+            className={`auth-method-switch ${authMethod === 'email' ? 'active' : ''}`}
+          >
+            По email
+          </button>
+          <button 
+            onClick={() => setAuthMethod('sms')}
+            className={`auth-method-switch ${authMethod === 'sms' ? 'active' : ''}`}
+          >
+            По SMS
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <div className="form-group">
-              <label>Имя</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          {authMethod === 'sms' ? (
+            <>
+              <div className="form-group">
+                <label>Номер телефона</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+7 (XXX) XXX-XX-XX"
+                  required
+                />
+              </div>
+              <button 
+                type="button"
+                onClick={sendSMSCode}
+                className="auth-button"
+                style={{ marginBottom: '15px' }}
+              >
+                <FaPhone /> Отправить код
+              </button>
+              <div className="form-group">
+                <label>Код из SMS</label>
+                <input
+                  type="text"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Введите 6-значный код"
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              {!isLogin && (
+                <div className="form-group">
+                  <label>Имя</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required={!isLogin}
+                  />
+                </div>
+              )}
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required={authMethod === 'email'}
+                />
+                {errors.email && <span className="error-message">{errors.email}</span>}
+              </div>
+              <div className="form-group">
+                <label>{authMethod === 'sms' ? 'Код из SMS' : 'Пароль'}</label>
+                <input
+                  type={authMethod === 'sms' ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  minLength={authMethod === 'email' ? 6 : undefined}
+                  placeholder={authMethod === 'sms' ? 'Введите код' : ''}
+                />
+              </div>
+              {authMethod === 'email' && !isLogin && (
+                <div className="form-group">
+                  <label>Телефон (необязательно)</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+7 (XXX) XXX-XX-XX"
+                  />
+                </div>
+              )}
+            </>
           )}
-          
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            {errors.email && <span className="error-message">{errors.email}</span>}
-          </div>
-          
-          <div className="form-group">
-            <label>Пароль</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              minLength="6"
-            />
-          </div>
-          
+
           <button type="submit" className="auth-button">
-            {isLogin ? 'Войти' : 'Зарегистрироваться'}
+            {authMethod === 'sms' ? 'Подтвердить' : isLogin ? 'Войти' : 'Зарегистрироваться'}
           </button>
         </form>
-        
+
         <div className="social-auth">
           <button type="button" className="social-button google">
             <FaGoogle style={{ marginRight: 10 }} /> Войти через Google

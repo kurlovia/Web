@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import './Catalog.css';
+import 'C:/git/Web/myweb/frontend/src/styles/responsive.css';
 
 const categories = [
   {

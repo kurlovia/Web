@@ -3,8 +3,8 @@ import React from 'react';
 import HeroSection from './components/HeroSection/HeroSection';
 import FeaturedProducts from './components/FeaturedProducts/FeaturedProducts';
 // import PromoSlider from './components/PromoSlider/PromoSlider';
-
 import './HomePage.css';
+import 'C:/git/Web/myweb/frontend/src/styles/responsive.css';
 
 const HomePage = () => {
   return (

@@ -1,78 +1,124 @@
 /* Основные стили */
 body {
-    
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
   background-color: #f5f5f5;
+  overflow-x: hidden; /* Предотвращаем горизонтальный скролл */
 }
 
 .cart-page {
-    background-color: #f5f5f5;
-  max-width: auto;
+  background-color: #f5f5f5;
+  max-width: 100%;
+  width: 100vw;
   margin: 0 auto;
   padding: 20px;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .cart-page h1 {
-    
   text-align: center;
   color: #333;
   margin-bottom: 30px;
   font-weight: 500;
+  font-size: clamp(1.5rem, 5vw, 2rem); /* Адаптивный размер заголовка */
 }
 
 /* Стили для пустой корзины */
 .empty-cart {
   text-align: center;
-  padding: 50px 0;
+  padding: 40px 20px; /* Увеличили отступы */
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 600px; /* Ограничили максимальную ширину */
+  margin: 0 auto; /* Центрируем блок */
 }
 
 .empty-cart p {
-  font-size: 18px;
+  font-size: clamp(16px, 4vw, 18px);
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* Увеличили отступ снизу */
+  padding: 0 15px;
 }
 
+/* Обновленные стили для кнопки "Перейти в каталог" */
 .continue-shopping {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: #4CAF50;
   color: white;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  min-width: 200px;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto; /* Центрируем кнопку */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .continue-shopping:hover {
   background-color: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .empty-cart {
+    padding: 30px 15px;
+  }
+  
+  .continue-shopping {
+    padding: 10px 20px;
+    min-width: 180px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .empty-cart {
+    padding: 25px 10px;
+  }
+  
+  .continue-shopping {
+    padding: 10px 15px;
+    min-width: 160px;
+  }
+}
 /* Стили для корзины с товарами */
 .cart-items {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-bottom: 30px;
+  width: 100%;
 }
 
 .cart-item {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 15px;
+  padding: 15px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .item-image {
-  width: 120px;
+  width: 100%;
   height: 120px;
   flex-shrink: 0;
+  align-self: center;
 }
 
 .item-image img {
@@ -84,22 +130,27 @@ body {
 
 .item-details {
   flex-grow: 1;
+  min-width: 0; /* Фикс для переполнения текста */
 }
 
 .item-title {
   margin: 0 0 10px 0;
-  font-size: 18px;
+  font-size: clamp(16px, 4vw, 18px);
   color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-size, .item-color {
   margin: 5px 0;
   color: #666;
-  font-size: 14px;
+  font-size: clamp(12px, 3vw, 14px);
 }
 
 .item-price {
   margin-top: 10px;
+  font-size: clamp(14px, 3.5vw, 16px);
 }
 
 .price-single {
@@ -116,25 +167,30 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
+  min-width: 0;
 }
 
+/* Кнопки управления количеством */
 .quantity-selector {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
 }
 
 .quantity-btn {
-  width: 30px;
-  height: 30px;
+  width: clamp(28px, 7vw, 32px);
+  height: clamp(28px, 7vw, 32px);
   background: #f5f5f5;
   border: 1px solid #ddd;
-  font-size: 16px;
+  font-size: clamp(14px, 3.5vw, 16px);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
   transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .quantity-btn:hover {
@@ -147,13 +203,15 @@ body {
 }
 
 .quantity-input {
-  width: 50px;
-  height: 30px;
+  width: clamp(40px, 10vw, 50px);
+  height: clamp(28px, 7vw, 32px);
   text-align: center;
   margin: 0 5px;
   border: 1px solid #ddd;
   appearance: textfield;
   border-radius: 4px;
+  font-size: clamp(14px, 3.5vw, 16px);
+  padding: 0;
 }
 
 .quantity-input::-webkit-outer-spin-button,
@@ -162,6 +220,7 @@ body {
   margin: 0;
 }
 
+/* Кнопка удаления */
 .remove-btn {
   background: none;
   border: none;
@@ -169,9 +228,11 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px;
-  transition: color 0.2s;
+  gap: clamp(3px, 1vw, 5px);
+  padding: clamp(3px, 1vw, 5px);
+  transition: all 0.2s;
+  font-size: clamp(14px, 3vw, 16px);
+  white-space: nowrap;
 }
 
 .remove-btn:hover {
@@ -179,7 +240,7 @@ body {
 }
 
 .icon-trash {
-  font-size: 16px;
+  font-size: clamp(14px, 3.5vw, 16px);
 }
 
 /* Стили для итоговой суммы */
@@ -188,6 +249,8 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .summary-row {
@@ -195,6 +258,7 @@ body {
   justify-content: space-between;
   margin-bottom: 10px;
   color: #666;
+  font-size: clamp(14px, 3.5vw, 16px);
 }
 
 .summary-total {
@@ -203,27 +267,41 @@ body {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid #eee;
-  font-size: 18px;
+  font-size: clamp(16px, 4vw, 18px);
   color: #333;
 }
 
-/* Стили для кнопок */
+/* Кнопки действий */
 .cart-actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
+  flex-wrap: wrap;
   gap: 15px;
+  margin-top: 30px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.clear-btn {
-  padding: 12px 20px;
-  background: #f44336;
-  color: white;
+.clear-btn, 
+.checkout-btn {
+  padding: clamp(10px, 2vw, 12px) clamp(15px, 4vw, 20px);
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  flex: 1;
   transition: background-color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  flex: 1 1 auto;
+  min-width: 120px;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-size: clamp(14px, 3.5vw, 16px);
+}
+
+.clear-btn {
+  background: #f44336;
+  color: white;
 }
 
 .clear-btn:hover {
@@ -231,40 +309,101 @@ body {
 }
 
 .checkout-btn {
-  padding: 12px 20px;
   background: #4CAF50;
   color: white;
-  border: none;
-  border-radius: 4px;
   text-decoration: none;
-  text-align: center;
-  flex: 2;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .checkout-btn:hover {
   background: #45a049;
 }
 
-/* Адаптивность */
+/* Кнопка "Перейти в каталог" */
+.continue-shopping {
+  display: inline-block;
+  padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 24px);
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s;
+  font-size: clamp(14px, 3vw, 16px);
+  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.continue-shopping:hover {
+  background-color: #45a049;
+}
+
+/* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
   .cart-item {
-    flex-direction: column;
+    grid-template-columns: 100px 1fr;
   }
   
   .item-controls {
+    grid-column: 1 / -1;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-top: 15px;
   }
   
   .cart-actions {
     flex-direction: column;
+    gap: 10px;
   }
   
-  .clear-btn, .checkout-btn {
+  .clear-btn, 
+  .checkout-btn {
     width: 100%;
+  }
+  
+  .remove-btn span {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .item-image {
+    height: 80px;
+  }
+  
+  .quantity-btn {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .quantity-input {
+    width: 36px;
+    height: 26px;
+  }
+  
+  .cart-actions {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .continue-shopping,
+  .clear-btn,
+  .checkout-btn {
+    white-space: normal;
+  }
+  
+  .item-title {
+    white-space: normal;
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
